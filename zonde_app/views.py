@@ -21,9 +21,11 @@ def get_networks(request):
     return Response(network_serializer.data)
 
 @api_view(['POST'])
-@parser_classes((JSONParser,))
 def network_client_post(request):
-    mac = request.data['mac'].lower()
+
+    print(request.body)
+
+    '''mac = request.data['mac'].lower()
     ssid = request.data['ssid']
 
     try:
@@ -36,5 +38,5 @@ def network_client_post(request):
     except SSID.DoesNotExist:
         ssid = SSID.objects.create(ssid=ssid)
 
-    Probe_request.objects.create(ssid=ssid, client=client)
+    Probe_request.objects.create(ssid=ssid, client=client)'''
     return Response(status=status.HTTP_200_OK)
