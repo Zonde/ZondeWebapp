@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils.timezone import activate
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
@@ -10,6 +11,7 @@ from zonde_app.models import *
 
 # Create your views here.
 def index(request):
+    activate('Europe/Amsterdam')
     probes = Probe_request.objects.all()[:50]
     return render(request, 'zonde_app/index.html', {'probes': probes})
 
