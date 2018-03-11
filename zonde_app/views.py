@@ -12,7 +12,7 @@ from zonde_app.models import *
 # Create your views here.
 def index(request):
     activate('Europe/Amsterdam')
-    probes = Probe_request.objects.all()[:50]
+    probes = Probe_request.objects.all()[:250]
     return render(request, 'zonde_app/index.html', {'probes': probes})
 
 
