@@ -23,6 +23,15 @@ def get_networks(request):
     network_serializer = NetworkSerializer(networks, many=True)
     return Response(network_serializer.data)
 
+@api_view(['GET'])
+def get_client_ssids(request, mac):
+    mac = mac.replace('-', ':')
+    client = Client.objects.get(mac=mac)
+    probes = Probe_request.objects.filter(client=client)
+    probe_serializer = Probe_request_serializer(probes, many=True)
+    return Response(probe_serializer.data)
+
+
 @api_view(['POST'])
 @parser_classes((FormParser, JSONParser))
 def network_client_post(request):
