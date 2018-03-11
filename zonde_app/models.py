@@ -24,3 +24,9 @@ class Probe_request(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     ssid = models.ForeignKey(SSID, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return "SSID: {}, MAC: {} at {}".format(self.ssid.ssid, self.client.mac, self.timestamp)
+
+    class Meta:
+        ordering = ['-timestamp']

@@ -10,7 +10,8 @@ from zonde_app.models import *
 
 # Create your views here.
 def index(request):
-    return HttpResponse("The site for the Zonde Project.")
+    probes = Probe_request.objects.all()[:50]
+    return render(request, 'zonde_app/index.html', {'probes': probes})
 
 
 
@@ -21,7 +22,7 @@ def get_networks(request):
     return Response(network_serializer.data)
 
 @api_view(['POST'])
-@parser_classes((FormParser,))
+@parser_classes((FormParser, JSONParser))
 def network_client_post(request):
 
     print(request.body)

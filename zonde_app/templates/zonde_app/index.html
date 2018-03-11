@@ -1,0 +1,18 @@
+The latest 50 probe requests are displayed here.
+
+<table>
+  <tr>
+    <th>SSID</th>
+    <th>MAC</th>
+    <th>Time</th>
+  </tr>
+
+{% for probe_r in probes %}
+<tr>
+  <td style="padding-right:8px;">{{ probe_r.ssid.ssid }}
+  <td style="padding-right:8px;">{{ probe_r.client.mac }}
+  <td>{{ probe_r.timestamp }}
+</tr>
+
+{% endfor %}
+</table>
