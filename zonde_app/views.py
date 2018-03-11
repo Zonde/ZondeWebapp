@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
 from rest_framework.response import Response
 from zonde_app.serializers import *
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, FormParser
 from zonde_app.models import *
 
 # Create your views here.
@@ -21,11 +21,12 @@ def get_networks(request):
     return Response(network_serializer.data)
 
 @api_view(['POST'])
+@parser_classes((FormParser,))
 def network_client_post(request):
 
     print(request.body)
 
-    '''mac = request.data['mac'].lower()
+    mac = request.data['mac'].lower()
     ssid = request.data['ssid']
 
     try:
@@ -38,5 +39,5 @@ def network_client_post(request):
     except SSID.DoesNotExist:
         ssid = SSID.objects.create(ssid=ssid)
 
-    Probe_request.objects.create(ssid=ssid, client=client)'''
+    Probe_request.objects.create(ssid=ssid, client=client)
     return Response(status=status.HTTP_200_OK)
