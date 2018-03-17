@@ -21,3 +21,9 @@ class Probe_request_serializer(serializers.ModelSerializer):
     class Meta:
         model = Probe_request
         fields = ('ssid', 'client', 'timestamp')
+
+class ssid_serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SSID
+        fields = '__all__'

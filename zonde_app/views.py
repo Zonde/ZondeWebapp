@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from zonde_app.serializers import *
 from rest_framework.parsers import JSONParser, FormParser
 from zonde_app.models import *
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def index(request):
@@ -24,13 +25,36 @@ def get_networks(request):
     return Response(network_serializer.data)
 
 @api_view(['GET'])
-def get_client_ssids(request, mac):
+def get_client_probes(request, mac):
     mac = mac.replace('-', ':')
-    client = Client.objects.get(mac=mac)
-    probes = Probe_request.objects.filter(client=client)
+    client = get_object_or_404(Client, mac=mac)
+    probes = client.get_probes()
     probe_serializer = Probe_request_serializer(probes, many=True)
     return Response(probe_serializer.data)
 
+@api_view(['GET'])
+def get_client_ssid_probes(request, mac, ssid):
+    mac = mac.replace('-', ':')
+    client = get_object_or_404(Client, mac=mac)
+    ssid = get_object_or_404(SSID, ssid=ssid)
+    probes = Probe_request.objects.filter(client=client, ssid=ssid)
+    probe_serializer = Probe_request_serializer(probes, many=True)
+    return Response(probe_serializer.data)
+
+@api_view(['GET'])
+def get_client_ssids(request, mac):
+    mac = mac.replace('-', ':')
+    client = get_object_or_404(Client, mac=mac)
+    ssids = client.get_ssids()
+    s = ssid_serializer(ssids, many=True)
+    return Response(s.data)
+
+@api_view(['GET'])
+def get_ssid_clients(request, ssid):
+    ssid = get_object_or_404(SSID, ssid=ssid)
+    clients = ssid.get_clients()
+    s = ClientSerializer(clients, many=True)
+    return Response(s.data)
 
 @api_view(['POST'])
 @parser_classes((FormParser, JSONParser))

@@ -8,6 +8,9 @@ class SSID(models.Model):
     def __str__(self):
         return self.ssid
 
+    def get_clients(self):
+        return [client for client in Client.objects.all() if self in client.get_ssids()]
+
 class Network(models.Model):
     ssid = models.ForeignKey(SSID, on_delete=models.CASCADE)
     latitude = models.CharField(max_length=20, null=True)
@@ -19,6 +22,13 @@ class Client(models.Model):
 
     def __str__(self):
         return self.mac
+
+    def get_probes(self):
+        return Probe_request.objects.filter(client=self)
+
+    def get_ssids(self):
+        return set([probe.ssid for probe in self.get_probes()])
+
 
 class Probe_request(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
