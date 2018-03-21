@@ -9,6 +9,10 @@ from zonde_app.serializers import *
 from rest_framework.parsers import JSONParser, FormParser
 from zonde_app.models import *
 from django.shortcuts import get_object_or_404
+from rq import Queue
+from worker import conn
+
+q = Queue(connection=conn)
 
 # Create your views here.
 def index(request):
@@ -59,7 +63,6 @@ def get_ssid_clients(request, ssid):
 @api_view(['POST'])
 @parser_classes((FormParser, JSONParser))
 def network_client_post(request):
-
     print(request.body)
 
     mac = request.data['mac'].lower()
@@ -76,4 +79,11 @@ def network_client_post(request):
         ssid = SSID.objects.create(ssid=ssid)
 
     Probe_request.objects.create(ssid=ssid, client=client)
+
+    result = q.enqueue(cool_function)
+
     return Response(status=status.HTTP_200_OK)
+
+# Just for testing, this should be removed
+def cool_function():
+    print("Cool")
