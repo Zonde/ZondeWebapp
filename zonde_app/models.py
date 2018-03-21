@@ -4,6 +4,7 @@ from django.utils import timezone
 
 class SSID(models.Model):
     ssid = models.CharField(max_length=64, unique=True)
+    last_wiggled = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
         return self.ssid
