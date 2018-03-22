@@ -1,4 +1,9 @@
-The latest 50 probe requests are displayed here.
+{% extends 'zonde_app/base.html' %}{% load static %}
+
+{% block content %}
+
+<main id="app">
+The latest 250 probe requests are displayed here.
 
 <table>
   <tr>
@@ -16,3 +21,10 @@ The latest 50 probe requests are displayed here.
 
 {% endfor %}
 </table>
+
+<div id="map" style="height: 500px; width: 500px;"></div>
+</main>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCK_Ia9gGgZWEKQPvXbixHo1lJObmegoOs&callback=initMap"></script>
+<script src="{% static 'js/index.js'%}"></script>
+
+{% endblock %}

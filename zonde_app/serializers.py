@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import *
 
 class NetworkSerializer(serializers.ModelSerializer):
-
+    ssid = serializers.SlugRelatedField(read_only=True, slug_field='ssid')
+    
     class Meta:
         model = Network
         fields = '__all__'
