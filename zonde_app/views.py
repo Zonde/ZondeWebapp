@@ -75,8 +75,8 @@ def network_client_post(request):
         ssid = SSID.objects.get(ssid=ssid)
     except SSID.DoesNotExist:
         ssid = SSID.objects.create(ssid=ssid)
+        ssid_added.delay(ssid)
 
-    ssid_added.delay(ssid)
     Probe_request.objects.create(ssid=ssid, client=client)
 
     return Response(status=status.HTTP_200_OK)
