@@ -9,7 +9,7 @@ from zonde_app.serializers import *
 from rest_framework.parsers import JSONParser, FormParser
 from zonde_app.models import *
 from django.shortcuts import get_object_or_404
-import django_rq
+from django_rq import job, enqueue
 
 # Create your views here.
 def index(request):
