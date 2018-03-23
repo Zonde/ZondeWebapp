@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_rq',
 ]
 
 REST_FRAMEWORK = {
@@ -64,6 +65,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'zonde.urls'
+
+RQ_QUEUES = {
+    'default': {
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
+        'DEFAULT_TIMEOUT': 500,
+    },
+}
 
 TEMPLATES = [
     {

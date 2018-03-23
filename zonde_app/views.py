@@ -9,8 +9,8 @@ from zonde_app.serializers import *
 from rest_framework.parsers import JSONParser, FormParser
 from zonde_app.models import *
 from django.shortcuts import get_object_or_404
-from rq import Queue
-from worker import conn
+import django_rq
+
 
 q = Queue(connection=conn)
 
@@ -80,10 +80,11 @@ def network_client_post(request):
 
     Probe_request.objects.create(ssid=ssid, client=client)
 
-    result = q.enqueue(cool_function)
+    cool_function.delay()
 
     return Response(status=status.HTTP_200_OK)
 
 # Just for testing, this should be removed
+@job
 def cool_function():
     print("Cool")

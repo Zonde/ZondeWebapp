@@ -1,2 +1,2 @@
 web: gunicorn zonde.wsgi
-worker: python worker.py
+worker: python manage.py rqworker default

@@ -20,3 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('zonde_app.urls'))
 ]
+
+urlpatterns += [ path('django-rq/', include('django_rq.urls')) ]
