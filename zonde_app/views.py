@@ -11,9 +11,6 @@ from zonde_app.models import *
 from django.shortcuts import get_object_or_404
 import django_rq
 
-
-q = Queue(connection=conn)
-
 # Create your views here.
 def index(request):
     activate('Europe/Amsterdam')
