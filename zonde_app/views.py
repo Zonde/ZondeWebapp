@@ -10,6 +10,7 @@ from rest_framework.parsers import JSONParser, FormParser
 from zonde_app.models import *
 from django.shortcuts import get_object_or_404
 from django_rq import job, enqueue
+from zonde_app.wigle import ssid_added
 
 # Create your views here.
 def index(request):
@@ -75,13 +76,7 @@ def network_client_post(request):
     except SSID.DoesNotExist:
         ssid = SSID.objects.create(ssid=ssid)
 
+    ssid_added.delay(ssid)
     Probe_request.objects.create(ssid=ssid, client=client)
 
-    cool_function.delay()
-
     return Response(status=status.HTTP_200_OK)
-
-# Just for testing, this should be removed
-@job
-def cool_function():
-    print("Cool")
