@@ -12,6 +12,8 @@ var app = new Vue({
     },
     methods: {
         loadMap: function() {
+            this.markers.forEach(function(marker) { marker.setMap(null); })
+            this.markers = [];
             var url;
             if (this.map_mac_filter == '') {
                 url = 'api/networks/';
