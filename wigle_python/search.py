@@ -1,6 +1,7 @@
 import requests
 from . import common
 from .exception import WigleError
+from json import JSONDecodeError
 
 SEARCH_URL = common.BASE_URL + '/network/search'
 
