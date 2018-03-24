@@ -142,3 +142,6 @@ else:
     RAVEN_CONFIG = {
         'dsn': os.environ.get('RAVEN_DSN')
     }
+
+    # For the worker
+    SENTRY_DSN = os.environ.get('RAVEN_DSN')
