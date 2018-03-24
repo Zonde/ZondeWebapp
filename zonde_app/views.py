@@ -27,6 +27,14 @@ def get_networks(request):
     return Response(network_serializer.data)
 
 @api_view(['GET'])
+def get_networks_mac(request, mac):
+    mac = mac.replace('-', ':')
+    client = get_object_or_404(Client, mac=mac)
+    networks = Network.objects.filter(ssid__in=client.ssids())
+
+    return Response(NetworkSerializer(networks, many=True).data)
+
+@api_view(['GET'])
 def get_client_probes(request, mac):
     mac = mac.replace('-', ':')
     client = get_object_or_404(Client, mac=mac)
@@ -47,14 +55,14 @@ def get_client_ssid_probes(request, mac, ssid):
 def get_client_ssids(request, mac):
     mac = mac.replace('-', ':')
     client = get_object_or_404(Client, mac=mac)
-    ssids = client.get_ssids()
+    ssids = client.ssids()
     s = ssid_serializer(ssids, many=True)
     return Response(s.data)
 
 @api_view(['GET'])
 def get_ssid_clients(request, ssid):
     ssid = get_object_or_404(SSID, ssid=ssid)
-    clients = ssid.get_clients()
+    clients = ssid.clients()
     s = ClientSerializer(clients, many=True)
     return Response(s.data)
 
