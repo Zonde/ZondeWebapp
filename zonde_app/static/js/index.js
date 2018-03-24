@@ -1,5 +1,6 @@
 var map;
 var bounds;
+var markerCluster;
 
 var app = new Vue({
     el: '#app',
@@ -16,6 +17,9 @@ var app = new Vue({
                     processMarker(network);
                 });
                 map.fitBounds(this.bounds);
+                markerCluster = new MarkerClusterer(map, this.markers,
+                        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
             });
         }
     },
@@ -51,4 +55,5 @@ function processMarker(marker) {
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {});
+
 }

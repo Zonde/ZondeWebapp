@@ -22,8 +22,10 @@ The latest 250 probe requests are displayed here.
 {% endfor %}
 </table>
 
-<div id="map" style="height: 500px; width: 500px;"></div>
+<div id="map" style="height: 50vh; width: 100vw;"></div>
 </main>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCK_Ia9gGgZWEKQPvXbixHo1lJObmegoOs&callback=initMap"></script>
 <script src="{% static 'js/index.js'%}"></script>
 
