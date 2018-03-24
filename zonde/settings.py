@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import django_heroku
 import dj_database_url
+import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_rq',
+    'raven.contrib.django.raven_compat',
 ]
 
 REST_FRAMEWORK = {
@@ -72,6 +74,8 @@ RQ_QUEUES = {
         'DEFAULT_TIMEOUT': 500,
     },
 }
+
+
 
 TEMPLATES = [
     {
@@ -135,3 +139,6 @@ if DEBUG:
     DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
 else:
     django_heroku.settings(locals())
+    RAVEN_CONFIG = {
+        'dsn': os.environ.get('RAVEN_DSN')
+    }
