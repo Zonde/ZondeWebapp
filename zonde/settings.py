@@ -131,6 +131,7 @@ STATIC_URL = '/static/'
 if DEBUG:
 
     DATABASE_URL = os.environ.get('DATABASE_URL_ZONDE')
+    print("Opening database: {}".format(DATABASE_URL))
     DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
 else:
     django_heroku.settings(locals())
