@@ -28,6 +28,7 @@ class Network(models.Model):
     ssid = models.ForeignKey(SSID, on_delete=models.CASCADE)
     latitude = models.CharField(max_length=20, null=True)
     longitude = models.CharField(max_length=20, null=True)
+    bssid = models.CharField(max_length=64, unique=True, null=True)
 
 class Tag(models.Model):
     tag = models.CharField(max_length=64, default='Unnamed tag', unique=True)
