@@ -6,12 +6,20 @@ var app = new Vue({
     el: '#app',
     delimiters: ['[[', ']]'],
     data: {
+        map_mac_filter: '',
         markers: [],
         bounds: null
     },
     methods: {
         loadMap: function() {
-            this.$http.get('/api/networks/').then(response => {
+            var url;
+            if (this.map_mac_filter == '') {
+                url = 'api/networks/';
+            } else {
+                url = 'api/'+ this.map_mac_filter +'/networks/';
+            }
+
+            this.$http.get(url).then(response => {
                 this.bounds = new google.maps.LatLngBounds();
                 response.body.forEach(function(network) {
                     processMarker(network);

@@ -22,6 +22,10 @@ The latest 250 probe requests are displayed here.
 {% endfor %}
 </table>
 
+
+<input v-model="map_mac_filter" placeholder="aa-bb-cc-dd-ee-ff">
+<button v-on:click="loadMap()">Reload</button>
+
 <div id="map" style="height: 50vh; width: 100vw;"></div>
 </main>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
