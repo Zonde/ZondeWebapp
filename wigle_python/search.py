@@ -1,6 +1,7 @@
 import requests
 from . import common
 from .exception import WigleError
+from json import JSONDecodeError
 
 SEARCH_URL = common.BASE_URL + '/network/search'
 
@@ -26,7 +27,10 @@ def ssid(token, ssid):
     networks = []
     while True:
         res = requests.get(SEARCH_URL, params=params, headers=headers)
-        json = res.json()
+        try:
+            json = res.json()
+        except JSONDecodeError:
+            raise WigleError("Failed to parse JSON, raw content: '{}'".format(res.text))
         # TODO also fetch and parse the other networks based on searchAfter property
         def prot_missing(item, prop):
             return "Protocol mismatch, {} did not have property '{}'".format(item, prop)
