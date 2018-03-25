@@ -39,7 +39,8 @@ def ssid(token, ssid):
     requests_log.propagate = True
     while True:
         #res = requests.get(SEARCH_URL, params=params, headers=headers)
-        res = requests.get(SEARCH_URL, auth=HTTPBasicAuth(os.environ.get('WIGLE_NAME'), os.environ.get('WIGLE_PASS')), params=params)
+        #res = requests.get(SEARCH_URL, auth=HTTPBasicAuth(os.environ.get('WIGLE_NAME'), os.environ.get('WIGLE_PASS')), params=params)
+        res = requests.get('https://www.app.agroexact.nl/api/reading/1/latest/')
         try:
             json = res.json()
         except JSONDecodeError:
