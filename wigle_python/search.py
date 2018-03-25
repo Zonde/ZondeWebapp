@@ -2,6 +2,8 @@ import requests
 from . import common
 from .exception import WigleError
 from json import JSONDecodeError
+from requests.auth import HTTPBasicAuth
+import os
 
 SEARCH_URL = common.BASE_URL + '/network/search'
 
@@ -23,10 +25,11 @@ class Network():
 
 def ssid(token, ssid):
     params = { 'ssid': ssid }
-    headers = { 'Authorization': 'Basic ' + token }
+    #headers = { 'Authorization': 'Basic ' + token }
     networks = []
     while True:
-        res = requests.get(SEARCH_URL, params=params, headers=headers)
+        #res = requests.get(SEARCH_URL, params=params, headers=headers)
+        res = requests.get(SEARCH_URL, auth=HTTPBasicAuth(os.environ.get('WIGLE_NAME'), os.environ.get('WIGLE_PASS')), params=params)
         try:
             json = res.json()
         except JSONDecodeError:
