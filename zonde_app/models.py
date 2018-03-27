@@ -40,7 +40,7 @@ class Tag(models.Model):
             for ssid in client.ssids():
                 if ssid in self.relevant_ssids.all():
                     client.tags.add(self)
-                    print("Added tag {} to {}".format(self.tag, client))
+                    print("Added a tag {} to {}".format(self.tag, client))
                     break
 
     def __str__(self):
