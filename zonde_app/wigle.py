@@ -3,15 +3,11 @@ from zonde_app.models import *
 from wigle_python import search
 import os
 
-TOKEN = os.environ.get('WIGLE_TOKEN')
-if TOKEN is None:
-    raise Exception("WIGLE_TOKEN not defined")
-else:
-    print("Wigle token: {}".format(TOKEN))
-
-
 @job
 def ssid_added(ssid):
+    TOKEN = os.environ.get('WIGLE_TOKEN')
+    if TOKEN is None:
+        raise Exception("WIGLE_TOKEN not defined")
     print("Looking for ssid: {}".format(ssid))
     networks = search.ssid(TOKEN, ssid)
     for n in networks:
