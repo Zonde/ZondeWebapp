@@ -4,9 +4,11 @@ from wigle_python import search
 from wigle_python.exception import WigleError
 from django.db import IntegrityError
 import os
+import logging
 
 @job
 def ssid_added(ssid):
+    logger = logging.getLogger('rq.worker')
     TOKEN = os.environ.get('WIGLE_TOKEN')
     if TOKEN is None:
         raise Exception("WIGLE_TOKEN not defined")
@@ -21,5 +23,5 @@ def ssid_added(ssid):
                 pass
         print("Added {} networks for ssid {}".format(len(networks), ssid))
     except WigleError as e:
-        print("Error occurred: {}".format(e))
-        
+        logger.error("Error occurred: {}".format(e))
+        #print()
