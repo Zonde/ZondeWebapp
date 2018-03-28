@@ -1,6 +1,7 @@
 from django_rq import job, enqueue
 from zonde_app.models import *
 from wigle_python import search
+from django.db import IntegrityError
 import os
 
 @job
