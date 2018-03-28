@@ -56,7 +56,7 @@ def ssid(token, ssid):
             raise WigleError(json['message'])
         if 'totalResults' not in json:
             raise WigleError(prot_missing('response', 'totalResults'))
-        if json['totalResults'] >= 1000
+        if json['totalResults'] >= 1000:
             raise WigleError("Too many results for ssid {} ({})".format(ssid, json['totalResults']))
         if 'results' not in json:
             raise WigleError(prot_missing('response', 'results'))
