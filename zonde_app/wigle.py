@@ -6,6 +6,8 @@ import os
 TOKEN = os.environ.get('WIGLE_TOKEN')
 if TOKEN is None:
     raise Exception("WIGLE_TOKEN not defined")
+else:
+    print("Wigle token: {}".format(TOKEN))
 
 
 @job
