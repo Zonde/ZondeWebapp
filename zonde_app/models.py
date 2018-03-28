@@ -28,11 +28,28 @@ class Network(models.Model):
     ssid = models.ForeignKey(SSID, on_delete=models.CASCADE)
     latitude = models.CharField(max_length=20, null=True)
     longitude = models.CharField(max_length=20, null=True)
+    bssid = models.CharField(max_length=64, unique=True, null=True)
 
+class Tag(models.Model):
+    tag = models.CharField(max_length=64, default='Unnamed tag', unique=True)
+    relevant_ssids = models.ManyToManyField(SSID)
+
+    def apply_tag_to_clients(self):
+        clients = Client.objects.all()
+        for client in clients:
+            for ssid in client.ssids():
+                if ssid in self.relevant_ssids.all():
+                    client.tags.add(self)
+                    print("Added a tag {} to {}".format(self.tag, client))
+                    break
+
+    def __str__(self):
+        return self.tag
 
 class Client(models.Model):
     mac = models.CharField(max_length=64, unique=True)
     probed_ssids = models.ManyToManyField(SSID, through=Probe_request)
+    tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return self.mac

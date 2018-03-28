@@ -2,6 +2,10 @@ import requests
 from . import common
 from .exception import WigleError
 from json import JSONDecodeError
+from requests.auth import HTTPBasicAuth
+import os
+import http.client as http_client
+import logging
 
 SEARCH_URL = common.BASE_URL + '/network/search'
 
@@ -23,10 +27,19 @@ class Network():
 
 def ssid(token, ssid):
     params = { 'ssid': ssid }
-    headers = { 'Authorization': 'Basic ' + token }
+    #headers = { 'Authorization': 'Basic ' + token }
     networks = []
+    http_client.HTTPConnection.debuglevel = 1
+
+    # You must initialize logging, otherwise you'll not see debug output.
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+    requests_log = logging.getLogger("requests.packages.urllib3")
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
     while True:
-        res = requests.get(SEARCH_URL, params=params, headers=headers)
+        #res = requests.get(SEARCH_URL, params=params, headers=headers)
+        res = requests.get(SEARCH_URL, auth=HTTPBasicAuth(os.environ.get('WIGLE_NAME'), os.environ.get('WIGLE_PASS')), params=params)
         try:
             json = res.json()
         except JSONDecodeError:
