@@ -5,5 +5,5 @@ from zonde_app.wigle import ssid_added
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        for ssid in SSID.objects.all():
-            ssid_added.delay(ssid)
+        for tag in Tag.objects.all():
+            tag.apply_tag_to_clients()
