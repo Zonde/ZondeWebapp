@@ -26,8 +26,10 @@ class Network():
         return "Network {} ({})".format(self.ssid, self.netid)
 
 def ssid(token, ssid):
+    if token is None:
+        raise WigleError("Token was 'None'")
     params = { 'ssid': ssid }
-    #headers = { 'Authorization': 'Basic ' + token }
+    headers = { 'Authorization': 'Basic ' + token }
     networks = []
     http_client.HTTPConnection.debuglevel = 1
 
@@ -38,8 +40,7 @@ def ssid(token, ssid):
     requests_log.setLevel(logging.DEBUG)
     requests_log.propagate = True
     while True:
-        #res = requests.get(SEARCH_URL, params=params, headers=headers)
-        res = requests.get(SEARCH_URL, auth=HTTPBasicAuth(os.environ.get('WIGLE_NAME'), os.environ.get('WIGLE_PASS')), params=params)
+        res = requests.get(SEARCH_URL, params=params, headers=headers)
         try:
             json = res.json()
         except JSONDecodeError:
