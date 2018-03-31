@@ -8,21 +8,37 @@ var app = new Vue({
     data: {
         map_mac_filter: '',
         markers: [],
-        bounds: null
+        bounds: null,
+        ssids: [],
     },
     methods: {
-        loadMap: function() {
+        macFilter: function() {
+            this.ssids = [];
+            var url = 'api/'+ this.map_mac_filter +'/networks/';
+            this.$http.get('api/'+ this.map_mac_filter +'/ssids/').then(response => {
+                response.body.forEach(function(ssid) {
+                    app.ssids.push(ssid.ssid);
+                });
+            });
+            console.log(url)
+            this.loadMap(url);
+        },
+        nameFilter: function(name) {
+            var url = 'api/name/'+ name +'/networks/';
+            this.loadMap(url);
+        },
+        loadMap: function(url) {
             this.markers.forEach(function(marker) { marker.setMap(null); })
             this.markers = [];
-            var url;
-            if (this.map_mac_filter == '') {
-                url = 'api/networks/';
-            } else {
-                url = 'api/'+ this.map_mac_filter +'/networks/';
+
+            if (markerCluster != null) {
+                markerCluster.clearMarkers();
             }
+
 
             this.$http.get(url).then(response => {
                 this.bounds = new google.maps.LatLngBounds();
+                console.log(response);
                 response.body.forEach(function(network) {
                     processMarker(network);
                 });
@@ -31,10 +47,11 @@ var app = new Vue({
                         {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
             });
+
         }
     },
     mounted: function() {
-        this.loadMap()
+        this.loadMap('api/networks/')
     }
 });
 
@@ -45,7 +62,9 @@ function processMarker(marker) {
 
     var infowindow = new google.maps.InfoWindow({
         content: contentString
-    })
+    });
+
+
 
     var marker = new google.maps.Marker({
         position: position,
@@ -59,6 +78,8 @@ function processMarker(marker) {
     })
 
     app.markers.push(marker);
+
+
 
     app.bounds.extend(position);
 }

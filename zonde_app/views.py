@@ -22,7 +22,14 @@ def index(request):
 
 @api_view(['GET'])
 def get_networks(request):
-    networks = Network.objects.all()
+    networks = Network.objects.all()[:250]
+    network_serializer = NetworkSerializer(networks, many=True)
+    return Response(network_serializer.data)
+
+@api_view(['GET'])
+def get_networks_name(request, ssid):
+    ssid = get_object_or_404(SSID, ssid=ssid)
+    networks = Network.objects.filter(ssid=ssid)
     network_serializer = NetworkSerializer(networks, many=True)
     return Response(network_serializer.data)
 

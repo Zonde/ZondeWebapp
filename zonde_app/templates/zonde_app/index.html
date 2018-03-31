@@ -3,8 +3,26 @@
 {% block content %}
 
 <main id="app">
-The latest 250 probe requests are displayed here.
 
+
+
+
+<div>
+<input v-model="map_mac_filter" placeholder="aa-bb-cc-dd-ee-ff">
+<button v-on:click="macFilter()">Reload</button>
+</div>
+
+<div>
+<div id="map" style="height: 70vh; width: 70vw; display: inline-block;"></div>
+<div style="vertical-align: top; display: inline-block;">
+    <p v-show="map_mac_filter != ''">Networks probed
+    <ul>
+        <li v-for="ssid in ssids"><a href="#" v-on:click="nameFilter(ssid)">[[ssid]]</a></li>
+    </ul>
+</div>
+</div>
+
+The latest 250 probe requests are displayed here.
 <table>
   <tr>
     <th>SSID</th>
@@ -21,12 +39,6 @@ The latest 250 probe requests are displayed here.
 
 {% endfor %}
 </table>
-
-
-<input v-model="map_mac_filter" placeholder="aa-bb-cc-dd-ee-ff">
-<button v-on:click="loadMap()">Reload</button>
-
-<div id="map" style="height: 50vh; width: 90vw;"></div>
 </main>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
