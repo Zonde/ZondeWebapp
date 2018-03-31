@@ -12,12 +12,13 @@
 <button v-on:click="macFilter()">Reload</button>
 </div>
 
+
 <div>
 <div id="map" style="height: 70vh; width: 70vw; display: inline-block;"></div>
 <div style="vertical-align: top; display: inline-block;">
     <p v-show="map_mac_filter != ''">Networks probed
     <ul>
-        <li v-for="ssid in ssids"><a href="#" v-on:click="nameFilter(ssid)">[[ssid]]</a></li>
+        <li v-for="ssid in ssids"><a href="#" v-on:click="nameFilter(ssid.ssid)">[[ssid.ssid]]: [[ssid.network_hits]] networks</a></li>
     </ul>
 </div>
 </div>
@@ -33,7 +34,7 @@ The latest 250 probe requests are displayed here.
 {% for probe_r in probes %}
 <tr>
   <td style="padding-right:8px;">{{ probe_r.ssid.ssid }}
-  <td style="padding-right:8px;">{{ probe_r.client.mac }}
+  <td  style="padding-right:8px;"><a v-on:click="map_mac_filter='{{probe_r.client.mac}}'; macFilter();" href="#">{{ probe_r.client.mac }}</a>
   <td>{{ probe_r.timestamp }}
 </tr>
 

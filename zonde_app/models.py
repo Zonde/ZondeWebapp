@@ -24,6 +24,9 @@ class SSID(models.Model):
     def clients(self):
         return self.probed_clients.distinct()
 
+    def network_hits(self):
+        return Network.objects.filter(ssid=self).count()
+
 class Network(models.Model):
     ssid = models.ForeignKey(SSID, on_delete=models.CASCADE)
     latitude = models.CharField(max_length=20, null=True)

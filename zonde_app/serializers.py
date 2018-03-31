@@ -28,7 +28,8 @@ class Probe_request_serializer(serializers.ModelSerializer):
 class ssid_serializer(serializers.ModelSerializer):
 
     clients = serializers.SlugRelatedField(read_only=True, many=True, slug_field='mac')
+    network_hits = serializers.IntegerField()
 
     class Meta:
         model = SSID
-        fields = ('ssid', 'clients')
+        fields = ('ssid', 'clients', 'network_hits')

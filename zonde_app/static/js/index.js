@@ -1,6 +1,8 @@
 var map;
 var bounds;
 var markerCluster;
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var labelIndex = 0;
 
 var app = new Vue({
     el: '#app',
@@ -10,6 +12,7 @@ var app = new Vue({
         markers: [],
         bounds: null,
         ssids: [],
+        ssid_label_map: null,
     },
     methods: {
         macFilter: function() {
@@ -17,7 +20,7 @@ var app = new Vue({
             var url = 'api/'+ this.map_mac_filter +'/networks/';
             this.$http.get('api/'+ this.map_mac_filter +'/ssids/').then(response => {
                 response.body.forEach(function(ssid) {
-                    app.ssids.push(ssid.ssid);
+                    app.ssids.push(ssid);
                 });
             });
             console.log(url)
@@ -35,6 +38,8 @@ var app = new Vue({
                 markerCluster.clearMarkers();
             }
 
+            this.ssid_label_map = new Map(),
+            labelIndex = 0;
 
             this.$http.get(url).then(response => {
                 this.bounds = new google.maps.LatLngBounds();
@@ -64,13 +69,19 @@ function processMarker(marker) {
         content: contentString
     });
 
+    if (!app.ssid_label_map.has(marker.ssid)) {
+        app.ssid_label_map.set(marker.ssid, labels[labelIndex]);
+        labelIndex++;
+    }
 
+    var label = app.ssid_label_map.get(marker.ssid);
 
     var marker = new google.maps.Marker({
         position: position,
         map: map,
         animation: google.maps.Animation.DROP,
         title: marker.ssid,
+        label: label,
     });
 
     marker.addListener('click', function() {
