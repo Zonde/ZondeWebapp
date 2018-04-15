@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/<ssid>/clients/', views.get_ssid_clients, name='get_ssid_clients'),
     path('api/<mac>/networks/', views.get_networks_mac, name='get_networks_mac'),
     path('api/name/<ssid>/networks/', views.get_networks_name, name='get_networks_name'),
+    path('api/<int:year_s>/<int:month_s>/<int:day_s>/<int:hour_s>/<int:min_s>/<int:year_e>/<int:month_e>/<int:day_e>/<int:hour_e>/<int:min_e>/', views.tag_count, name='tag_count'),
 
     #path('api-auth/', include('rest_framework.urls'))
 ]

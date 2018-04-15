@@ -33,3 +33,8 @@ class ssid_serializer(serializers.ModelSerializer):
     class Meta:
         model = SSID
         fields = ('ssid', 'clients', 'network_hits')
+
+class statsSerializer(serializers.Serializer):
+    total_count = serializers.IntegerField()
+    tag_data = serializers.CharField(max_length=1024)
+    ssid_data = serializers.CharField(max_length=10000)

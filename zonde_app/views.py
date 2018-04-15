@@ -11,6 +11,7 @@ from zonde_app.models import *
 from django.shortcuts import get_object_or_404
 from django_rq import job, enqueue
 from zonde_app.wigle import ssid_added
+from datetime import datetime
 
 # Create your views here.
 def index(request):
@@ -40,6 +41,27 @@ def get_networks_mac(request, mac):
     networks = Network.objects.filter(ssid__in=client.ssids())
 
     return Response(NetworkSerializer(networks, many=True).data)
+
+@api_view(['GET'])
+def tag_count(request, year_s, month_s, day_s, hour_s, min_s, year_e, month_e, day_e, hour_e, min_e):
+    dt_s = datetime(year_s, month_s, day_s, hour_s, min_s)
+    dt_e = datetime(year_e, month_e, day_e, hour_e, min_e)
+    probes = Probe_request.objects.filter(timestamp__range=(dt_s, dt_e))
+    clients = {p.client for p in probes}
+    tag_data = ''
+    ssid_data = ''
+    ssids = {p.ssid for p in probes}
+
+    for ssid in ssids:
+        ssid_data += "{}    ".format(ssid)
+
+
+    for tag in Tag.objects.all():
+        count = len([x for x in clients if tag in x.tags.all()])
+        tag_data += "{}: {}, ".format(tag, count)
+
+    return Response(statsSerializer(Stats(len(clients), tag_data, ssid_data)).data)
+
 
 @api_view(['GET'])
 def get_client_probes(request, mac):
@@ -95,3 +117,10 @@ def network_client_post(request):
     Probe_request.objects.create(ssid=ssid, client=client)
 
     return Response(status=status.HTTP_200_OK)
+
+class Stats:
+
+    def __init__(self, count, data, ssid_data):
+        self.total_count = count
+        self.tag_data = data
+        self.ssid_data = ssid_data
